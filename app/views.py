@@ -12,7 +12,9 @@ from util import log
 @app.route('/')
 def index_page():
     log('index page', request.remote_addr)
-    return render_template('index.html')
+    return render_template('main.html',
+                            best_namings=range(4),
+                            recent_namings=range(4))
 
 @app.route('/signin')
 def signin_page():
@@ -20,7 +22,7 @@ def signin_page():
     if current_user.is_authenticated():
         return redirect(request.referrer or '/')
     return redirect(request.referrer or '/')
-    return render_template('login.html')
+    return render_template('signin.html')
 
 @app.route('/signup/<provider_id>', methods=['GET', 'POST'])
 def register(provider_id=None):

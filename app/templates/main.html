@@ -1,0 +1,33 @@
+{% import "util.html" as util %}
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+<div class="panel2 panel2-danger">
+  <div class="panel2-heading">
+    <h3 class="panel2-title"> Best Namings</h3>
+  </div>
+  <div class="panel2-body">
+    <div class="row">
+      {% for d in best_namings %}
+        {{ util.naming_thumbnail() }}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="panel2 panel2-danger">
+  <div class="panel2-heading">
+    <h3 class="panel2-title"> Recent Namings</h3>
+  </div>
+  <div class="panel2-body">
+    <div class="row">
+      {% for d in recent_namings %}
+        {{ util.naming_thumbnail() }}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+
