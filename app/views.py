@@ -1,60 +1,71 @@
 from flask import *
-from flask.ext.security import LoginForm, current_user, login_required, \
-    login_user
-from flask.ext.social.utils import get_provider_or_404
-from flask.ext.social.views import connect_handler
 
 from . import app, db
 from .config import conf
 from util import log
+from providers import get_provider, twitter, facebook, google
 
 
 @app.route('/')
 def index_page():
     log('index page', request.remote_addr)
+    best_namings = range(4)
+    recent_namings = range(4)
+
     return render_template('main.html',
-                            best_namings=range(4),
-                            recent_namings=range(4))
+                            best_namings=best_namings,
+                            recent_namings=recent_namings)
 
 @app.route('/signin')
 def signin_page():
-    log('login page', request.remote_addr)
+    log('signin page', request.remote_addr)
     if current_user.is_authenticated():
         return redirect(request.referrer or '/')
     return redirect(request.referrer or '/')
     return render_template('signin.html')
 
-@app.route('/signup/<provider_id>', methods=['GET', 'POST'])
-def register(provider_id=None):
-    if current_user.is_authenticated():
-        return redirect(request.referrer or '/')
+@twitter.auth.tokengetter
+def get_twitter_token(token=None):
+    return session.get('twitter_token')
 
-    provider = get_provider_or_404(provider_id)
-    connection_values = session.get('failed_login_connection', None)
+@app.route('/signup/twitter')
+@twitter.auth.authorized_handler
+def twitter_authorized(resp):
+    next_url = request.args.get('next') or url_for('index_page')
+    if resp is None:
+        flash(u'You denied the request to sign in.')
+        return redirect(next_url)
 
-    ds = current_app.security.datastore
-    user = ds.create_user(email=form.email.data, password=form.password.data)
-    ds.commit()
+    print resp
+    session['twitter_token'] = (
+        resp['oauth_token'],
+        resp['oauth_token_secret']
+    )
+    return redirect(next_url)
 
-    # See if there was an attempted social login prior to registering
-    # and if so use the provider connect_handler to save a connection
-    connection_values = session.pop('failed_login_connection', None)
+@facebook.auth.tokengetter
+def get_facebook_oauth_token():
+    return session.get('oauth_token')
 
-    if connection_values:
-        connection_values['user_id'] = user.id
-        connect_handler(connection_values, provider)
+@app.route('/signup/facebook')
+@facebook.auth.authorized_handler
+def facebook_authorized(resp):
+    next_url = request.args.get('next') or url_for('index_page')
+    if resp is None:
+        flash(u'You denied the request to sign in.')
+        return redirect(next_url)
 
-    if login_user(user):
-        ds.commit()
-        flash('Account created successfully', 'info')
-        return redirect(url_for('profile'))
+    print resp
+    session['facebook_token'] = (
+        resp['oauth_token'],
+        resp['oauth_token_secret']
+    )
+    return redirect(next_url)
 
-    return render_template('thanks.html', user=user)
 
-    login_failed = int(request.args.get('login_failed', 0))
-
-    return render_template('register.html',
-                           form=form,
-                           provider=provider,
-                           login_failed=login_failed,
-                           connection_values=connection_values)
+@app.route('/auth/<provider_id>', methods=['POST'])
+def provider_auth(provider_id):
+    provider = get_provider(provider_id)
+    if provider == None:
+        return None
+    return provider.auth.authorize()
