@@ -1,3 +1,5 @@
+import json
+
 from flask import *
 
 from . import app, db
@@ -48,6 +50,7 @@ def handle_signup(provider_id, resp):
     api = get_provider(provider_id).get_api(key, sec)
     log(dir(api))
     cred = api.VerifyCredentials()
+    cred = json.loads(unicode(cred))
     return jsonify(cred)
     return redirect(next_url)
 
