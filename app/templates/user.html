@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class='profile'>
+    <div class='profile-icon'>
+      <img src="{{ user.profileIcon }}" />
+    </div>
+    <div class='profile-detail'>
+      <h3 class='level'>Level {{ user.summonerLevel }}</h3>
+      <h1 class='name'>{{ user['name'] }}</h1>
+      <!--div class='panel stats'>
+      </div-->
+      <div class='panel games'>
+        <ul class=games>
+        {% for gm in games.games %}
+          <li class='game'>
+          <img class='champion {{ 'team-' ~ gm.teamId }}' src="{{ gm.championIcon }}" />
+          <div class='players'>
+            <div class='allies'>
+            {% for p in gm.allies %}
+              <img class='champion {{ 'team-' ~ p.teamId }}' src="{{ p.championIcon }}" />
+            {% endfor %}
+            </div>
+            <div class='enemies'>
+            {% for p in gm.enemies %}
+              <img class='champion {{ 'team-' ~ p.teamId }}' src="{{ p.championIcon }}" />
+            {% endfor %}
+            </div>
+          </div>
+          <h2 class='result'>{{ gm.result }}</h2>
+          <span class='date'>{{ gm.createDateStr }}</span>
+        {% else %}
+          <li><em>No games have been played yet.</em>
+        {% endfor %}
+        </ul>
+        <!--span>{{ userstr }}</span-->
+      </div>
+    </div>
+  </div>
+{% endblock %}

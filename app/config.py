@@ -14,6 +14,7 @@ conf = {
         'timeout': 120,
         'max_tries': 3,
         'test-mode': False,
+        'database': None
     },
 }
 
@@ -36,7 +37,8 @@ def load_conf(filename):
     required = {
         'sys': [
             'twitter_consumer_key', 'twitter_consumer_secret',
-            'facebook_consumer_key', 'facebook_consumer_secret'
+            'facebook_consumer_key', 'facebook_consumer_secret',
+            'database',
         ]
     }
     for req in required:
@@ -47,6 +49,12 @@ def load_conf(filename):
 
     check_test_mode()
     set_timezone(conf['sys']['timezone'])
+
+def load_default_conf():
+    if check_test_mode():
+        load_conf('local.conf')
+    else:
+        load_conf('prod.conf')
 
 def check_test_mode():
     try:

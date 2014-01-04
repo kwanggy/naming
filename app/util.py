@@ -7,12 +7,17 @@ tz_local = tz.tzutc()
 def set_timezone(timezone):
     tz_local = tz.gettz(timezone)
 
+def date_str(date, form):
+    date = date.replace(tzinfo=tz_utc)
+    date = date.astimezone(tz_local)
+    d_str = date.strftime(form)
+    return d_str
+
+
 def now_str(form):
-    d = datetime.utcnow()
-    d = d.replace(tzinfo=tz_utc)
-    d = d.astimezone(tz_local)
-    now = d.strftime(form)
-    return now
+    now = datetime.utcnow()
+    n_str = date_str(now, form)
+    return n_str
 
 def log(*args):
     try:

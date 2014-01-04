@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+<form class='logs-clear' action='{{ url_for('logsPage') }}' method='post'>
+    <button type=submit class='btn'>Clear</button>
+</form>
+<a href='{{ url_for('logsPage') }}'>
+    <h1 class='title'>Logs</h1>
+</a>
+<div class=panel>
+  <ul class=logs>
+    {% for l in logs %}
+      <li class=log>
+        <span class=msg>{{ l[0] }}</span>
+        <span class=from>{{ l[1] }}</span>
+        <span class=at>{{ l[2] }}</span>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
