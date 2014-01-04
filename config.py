@@ -2,8 +2,13 @@ from util import set_timezone, log
 
 conf = {
     'sys': {
-        'twitter_app_key': None,
-        'twitter_app_secret': None,
+        'debug': True,
+        'port': 9020,
+        'secret_key': None,
+        'twitter_consumer_key': None,
+        'twitter_consumer_secret': None,
+        'facebook_consumer_key': None,
+        'facebook_consumer_secret': None,
         'timezone': 'America/New_York',
         'verbose': True,
         'timeout': 120,
@@ -29,7 +34,10 @@ def load_conf(filename):
             c[subkey] = _c[subkey]
 
     required = {
-        'sys': ['twitter_app_key', 'twitter_app_secret']
+        'sys': [
+            'twitter_consumer_key', 'twitter_consumer_secret',
+            'facebook_consumer_key', 'facebook_consumer_secret'
+        ]
     }
     for req in required:
         c = conf[req]
@@ -37,15 +45,19 @@ def load_conf(filename):
             if c[r] == None:
                 raise ValueError('conf.%s.%s is None' % (req, r))
 
+    check_test_mode()
     set_timezone(conf['sys']['timezone'])
 
+def check_test_mode():
     try:
         with open('TEST') as f:
             pass
         log('TEST MODE')
         conf['test-mode'] = True
+        return conf['test-mode']
     except:
         pass
+    return False
 
 
 if __name__ == '__main__':
