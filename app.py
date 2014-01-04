@@ -9,7 +9,7 @@ app = init.app
 @app.route('/')
 def index():
     log('index page', request.remote_addr)
-    return render_template('index.html')
+    return render_template('main.html')
 
 
 if __name__ == '__main__':
