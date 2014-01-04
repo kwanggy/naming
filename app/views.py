@@ -48,7 +48,7 @@ def handle_signup(provider_id, resp):
     api = get_provider(provider_id).get_api(key, sec)
     log(dir(api))
     cred = api.VerifyCredentials()
-    return jsonify.dumps(cred)
+    return jsonify(cred)
     return redirect(next_url)
 
 @twitter.auth.tokengetter
