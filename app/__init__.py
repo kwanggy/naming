@@ -1,10 +1,5 @@
 from flask import *
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.security import Security, SQLAlchemyUserDatastore
-from flask.ext.social import Social, SQLAlchemyConnectionDatastore, \
-     login_failed
-from flask.ext.social.utils import get_connection_values_from_oauth_response
-
 from util import log
 from config import conf, load_default_conf
 
@@ -19,6 +14,19 @@ if '://' not in conf['sys']['database']:
     db = os.environ[db]
 app.config['SQLALCHEMY_DATABASE_URI'] = db
 db = SQLAlchemy(app)
+
+
+from flask_oauth import OAuth
+from providers import get_provider
+providers = dict()
+for provider_id  in conf['sys']['providers']:
+    module = get_provider(provider_id)
+    con = dict(module.config)
+    del con['id'], con['install'], con['module']
+    for k, v in conf['sys'][provider_id].items():
+        con[k] = v
+    
+    module.auth = OAuth().remote_app(**con)
 
 
 from . import models, views

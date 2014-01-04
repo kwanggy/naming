@@ -1,7 +1,21 @@
 {% import "util.html" as util %}
+{% macro social_signup(provider_id, display_name) %}
+  <form action="{{ url_for('provider_auth', provider_id=provider_id) }}" method="POST">
+    <button type="submit" class="btn btn-primary btn-large">Register with {{ display_name }}</button>
+  </form>
+{% endmacro %}
+
 {% extends "layout.html" %}
 {% block body %}
+
 <div class="container">
+<div class="span4 col3">
+  {{ social_signup('twitter', 'Twitter' )}}
+  {{ social_signup('facebook', 'Facebook' )}}
+  {{ social_signup('google', 'Google' )}}
+  <!-- {{ social_signup('github', 'GitHub' )}} -->
+</div>
+
 <div class="panel2 panel2-danger">
   <div class="panel2-heading">
     <h3 class="panel2-title"> Best Namings</h3>

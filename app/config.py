@@ -5,10 +5,9 @@ conf = {
         'debug': True,
         'port': 9020,
         'secret_key': None,
-        'twitter_consumer_key': None,
-        'twitter_consumer_secret': None,
-        'facebook_consumer_key': None,
-        'facebook_consumer_secret': None,
+        'providers': ['twitter', 'facebook'],
+        'twitter': None,
+        'facebook': None,
         'timezone': 'America/New_York',
         'verbose': True,
         'timeout': 120,
@@ -35,11 +34,7 @@ def load_conf(filename):
             c[subkey] = _c[subkey]
 
     required = {
-        'sys': [
-            'twitter_consumer_key', 'twitter_consumer_secret',
-            'facebook_consumer_key', 'facebook_consumer_secret',
-            'database',
-        ]
+        'sys': [ 'twitter', 'facebook', 'database' ]
     }
     for req in required:
         c = conf[req]
