@@ -16,6 +16,10 @@ else:
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = conf['sys']['secret_key']
-app.config['SQLALCHEMY_DATABASE_URI'] = conf['sys']['database']
+db = conf['sys']['database']
+if '://' not in conf['sys']['database']
+    import os
+    db = os.environ[db]
+app.config['SQLALCHEMY_DATABASE_URI'] = db
 db = SQLAlchemy(app)
 
