@@ -28,9 +28,11 @@ config = {
 }
 
 auth = None
+consumer_key = None
+consumer_secret = None
 
-def get_api(connection, **kwargs):
-    return facebook.GraphAPI(getattr(connection, 'access_token'))
+def get_api(token_key, token_secret):
+    return facebook.GraphAPI(token_key)
 
 
 def get_provider_user_id(response, **kwargs):

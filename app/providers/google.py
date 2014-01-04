@@ -36,6 +36,8 @@ config = {
 }
 
 auth = None
+consumer_key = None
+consumer_secret = None
 
 def _get_api(credentials):
     http = httplib2.Http()
@@ -44,9 +46,9 @@ def _get_api(credentials):
     return api
 
 
-def get_api(connection, **kwargs):
+def get_api(token_key, token_secret):
     credentials = googleoauth.AccessTokenCredentials(
-        access_token=getattr(connection, 'access_token'),
+        access_token=token_key,
         user_agent=''
     )
     return _get_api(credentials)

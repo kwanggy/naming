@@ -25,12 +25,14 @@ config = {
 }
 
 auth = None
+consumer_key = None
+consumer_secret = None
 
-def get_api(connection, **kwargs):
-    return twitter.Api(consumer_key=kwargs.get('consumer_key'),
-                       consumer_secret=kwargs.get('consumer_secret'),
-                       access_token_key=connection.access_token,
-                       access_token_secret=connection.secret)
+def get_api(token_key, token_secret):
+    return twitter.Api(consumer_key=consumer_key,
+                       consumer_secret=consumer_secret,
+                       access_token_key=token_key,
+                       access_token_secret=token_secret)
 
 
 def get_provider_user_id(response, **kwargs):
