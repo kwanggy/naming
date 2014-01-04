@@ -7,8 +7,7 @@ if __name__ == '__main__':
         port = conf['sys']['port']
     else:
         import os
-        port = os.environ['PORT']
-    ops = { 'bind': '0.0.0.0:%s' % str(port) }
+        port = int(os.environ['PORT'])
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
     app.run(host='0.0.0.0', port=port)
