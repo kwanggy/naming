@@ -22,9 +22,9 @@ providers = dict()
 for provider_id  in conf['sys']['providers']:
     module = get_provider(provider_id)
     con = dict(module.config)
-    del con['id'], con['install'], con['module']
+    del con['id'], con['callback']
     for k, v in conf['sys'][provider_id].items():
-        con[k] = v    
+        con[k] = v
     module.auth = OAuth().remote_app(**con)
     module.consumer_key = conf['sys'][provider_id]['consumer_key']
     module.consumer_secret = conf['sys'][provider_id]['consumer_secret']

@@ -14,6 +14,7 @@ def index_page():
     best_namings = range(4)
     recent_namings = range(4)
 
+    #flash(('warning', u'TEST'))
     return render_template('main.html',
                             best_namings=best_namings,
                             recent_namings=recent_namings)
@@ -29,29 +30,12 @@ def signin_page():
 def handle_signup(provider_id, resp):
     next_url = request.args.get('next') or url_for('index_page')
     if resp is None:
-        flash(u'You denied the request to sign in.')
+        flash(('danger', u'You denied the request to sign in.'))
         return redirect(next_url)
 
-    if provider_id == 'twitter':
-        display_name = resp['screen_name']
-        full_name = resp['screen_name']
-
-    data = {
-        'provider_id': provider_id,
-        'display_name': display_name,
-        'full_name': full_name,
-        'token_key': resp['oauth_token'],
-        'token_secret': resp['oauth_token_secret'],
-    }
-    print resp
-
-    session[provider_id] = (data['token_key'], data['token_secret'])
-    key, sec = session[provider_id]
-    api = get_provider(provider_id).get_api(key, sec)
-    log(dir(api))
-    cred = api.VerifyCredentials()
-    cred = json.loads(unicode(cred))
-    return jsonify(cred)
+    info = get_provider(provider_id).get_user_info(resp)
+    session[provider_id] = (info['token_key'], info['token_secret'])
+    return jsonify(info)
     return redirect(next_url)
 
 @twitter.auth.tokengetter
@@ -80,4 +64,9 @@ def provider_auth(provider_id):
     provider = get_provider(provider_id)
     if provider == None:
         return None
-    return provider.auth.authorize()
+    callback = provider.config['callback']
+    if callback:
+        url = url_for('index_page', _external=True)[:-1]
+        callback = url + callback
+        log(callback)
+    return provider.auth.authorize(callback)

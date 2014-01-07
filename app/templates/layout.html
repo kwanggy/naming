@@ -14,13 +14,7 @@
 
     <!-- Le styles -->
     
-    <link href="/static/css/post.css" rel="stylesheet">
     <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/static/css/docs.css" rel="stylesheet">
-    <link href="/static/js/google-code-prettify/prettify.css" rel="stylesheet">
-    <link href="/static/css/bootstrap2.css" rel="stylesheet">
-    
 
     <link href="/static/less/style.less" rel="stylesheet/less" />
     <script src="/static/js/less-1.2.1.min.js"></script>
@@ -64,53 +58,53 @@
     <!-- End Google Analytics -->
   </head>
 
-  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+  <body>
 
 
   <!-- Navbar
     ================================================== -->
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div class="navbar navbar-fixed-top navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('index_page') }}">Naming<small class="beta">BETA</small></a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="{{ url_for('index_page') }}">Naming<small class="beta">BETA</small></a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active">
-                <a href="{{ url_for('index_page') }}">Home</a>
-              </li>
-              <!--li class="">
-                <a href="twitstake.cdo.li">TwitStake</a>
-              </li-->
-              <li class="">
-                <a href="http://www.cdo.li">About</a>
-              </li>
-            </ul>
-          </div>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="{{ url_for('index_page') }}">Home</a>
+            </li>
+            <!--li class="">
+              <a href="twitstake.cdo.li">TwitStake</a>
+            </li-->
+            <li class="">
+              <a href="http://www.cdo.li">About</a>
+            </li>
+          </ul>
+          <!--ul class="nav navbar-nav nyyavbar-right">
+            <li><a></a></li>
+          </ul-->
         </div>
       </div>
-      {% for message in get_flashed_messages() %}
-        <div class=flash>{{ message }}</div>
+      {% for type, message in get_flashed_messages() %}
+        <div class="alert alert-dismissable alert-{{ type }}">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          {{ message }}
+        </div>
       {% endfor %}
     </div>
 
 
     <div class="container">
-      <div class="contents">
-      <!-- start contents -->
-        {% block body %}{% endblock %}
-      <!-- end contents -->
-      </div>
-
-      <div class='ad'>
+      <div class='google-adsense'>
         <script type="text/javascript"><!--
         google_ad_client = "ca-pub-9188600439788462";
-        /* AnotherLeague.cdo.li */
-        google_ad_slot = "1329790107";
+        /* Naming.cdo.li */
+        google_ad_slot = "1489410508";
         google_ad_width = 728;
         google_ad_height = 90;
         //-->
@@ -119,11 +113,34 @@
         src="//pagead2.googlesyndication.com/pagead/show_ads.js">
         </script>
       </div>
+    </div>
+
+    <div class="container">
+      <div class="contents">
+{% macro social_signup(provider_id, display_name) %}
+  <form action="{{ url_for('provider_auth', provider_id=provider_id) }}" method="POST" style="float: left;">
+    <button type="submit" class="btn btn-primary btn-large" style="width: 200px; margin:12px 19px;">
+      Register with {{ display_name }}
+    </button>
+  </form>
+{% endmacro %}
+        <div class="panel">
+          <ul class="nav" style="width: 718px; margin: auto;">
+            <li>{{ social_signup('twitter', 'Twitter' )}}</li>
+            <li>{{ social_signup('facebook', 'Facebook' )}}</li>
+            <li>{{ social_signup('google', 'Google' )}}</li>
+            <!-- {{ social_signup('github', 'GitHub' )}} -->
+          </ul>
+        </div>
+        <!-- start contents -->
+          {% block body %}{% endblock %}
+        <!-- end contents -->
+      </div>
 
       <!-- Footer
       ================================================== -->
       <footer class="footer">
-        <p>&copy; <a href="http://www.cdo.li" target="_blank">@Chidoli</a> 2013</p>
+        <p>&copy; <a href="http://www.cdo.li" target="_blank">@Chidoli</a> 2014</p>
       </footer>
 
     </div><!-- /container -->
