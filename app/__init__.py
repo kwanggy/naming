@@ -8,6 +8,7 @@ load_default_conf()
 app = Flask(__name__)
 app.config['DEBUG'] = conf['sys']['debug']
 app.config['SECRET_KEY'] = conf['sys']['secret_key']
+app.config['SERVER_NAME'] = conf['sys']['server_name']
 db = conf['sys']['database']
 if '://' not in conf['sys']['database']:
     import os
