@@ -4,6 +4,7 @@ conf = {
     'sys': {
         'debug': True,
         'port': 9020,
+        'base_url': None,
         'secret_key': None,
         'providers': ['twitter', 'facebook'],
         'twitter': None,

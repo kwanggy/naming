@@ -30,5 +30,4 @@ for provider_id  in conf['sys']['providers']:
     module.consumer_secret = conf['sys'][provider_id]['consumer_secret']
 
 
-
 from . import models, views
