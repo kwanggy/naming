@@ -5,18 +5,16 @@
     <h4 class="caption">Naming</h4>
   </a>
   <ul class="list-group">
-    <li class="list-group-item">
-      <span class="badge">14</span>
-      Comment 1
-    </li>
-    <li class="list-group-item">
-      <span class="badge">2</span>
-      Comment 2
-    </li>
-    <li class="list-group-item">
-      <span class="badge">1</span>
-      Comment 3
-    </li>
+    {{ util.naming_comment('Comment 1', 14) }}
+    {{ util.naming_comment('Comment 2', 2) }}
+    {{ util.naming_comment('Comment 3', 1) }}
   </ul>
 </div>
+{% endmacro %}
+
+{% macro naming_comment(comment, badge) %}
+<li class="list-group-item comment">
+  <span class="badge">{{ badge }}</span>
+  {{ comment }}
+</li>
 {% endmacro %}
