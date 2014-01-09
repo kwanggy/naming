@@ -10,4 +10,4 @@ if __name__ == '__main__':
         port = int(os.environ['PORT'])
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
-    app.run(host='naming.cdo.li', port=port)
+    app.run(host='0.0.0.0', port=port)

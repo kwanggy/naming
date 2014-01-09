@@ -6,6 +6,7 @@ from config import conf, load_default_conf
 
 load_default_conf()
 app = Flask(__name__)
+app.config['SERVER_NAME'] = 'naming.cdo.li'
 app.config['DEBUG'] = conf['sys']['debug']
 app.config['SECRET_KEY'] = conf['sys']['secret_key']
 db = conf['sys']['database']
