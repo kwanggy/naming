@@ -66,9 +66,8 @@ def provider_auth(provider_id):
         return None
     callback = provider.config['callback']
     if callback:
-        baseurl = conf['sys']['base_url'] or url_for('index_page')[:-1]
-
-        url = url_for('index_page', _external=True)
+        baseurl = conf['sys']['base_url']
+        baseurl = baseurl or url_for('index_page', _external=True)[:-1]
         callback = url + callback
         log(callback)
     return provider.auth.authorize(callback)
